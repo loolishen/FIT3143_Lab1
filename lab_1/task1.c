@@ -27,3 +27,13 @@ bool prime(int k)
 
 }
 
+int main() {
+    int myNum;
+    scanf("%d", &myNum);
+    if (prime(myNum)) {
+        printf("Prime\n");
+    } else {
+        printf("Not Prime\n");
+    }
+    return 0;
+}
