@@ -5,7 +5,7 @@
 #include <stdbool.h>
 
 
-bool main(int k)
+bool prime(int k)
 {
     if (k < 0) {
         return false;
