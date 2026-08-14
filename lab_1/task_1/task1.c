@@ -1,7 +1,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <math.h>
 #include <stdbool.h>
 #include <time.h>
 
@@ -41,7 +40,7 @@ bool isPrime(int k) {
         return false;
     }
         
-    for (int i = 3; i <= sqrt(k); i += 2) {
+    for (int i = 3; i * i <= k; i += 2) {
         if (k % i == 0) {
             return false;
         }
