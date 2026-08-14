@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
+#include <time.h>
 
 
 void writeToFile(int *primes, int count) {
@@ -98,5 +99,12 @@ void primesLessThan() {
 
 
 int main() {
+    clock_t start = clock();
+
     primesLessThan();
+
+    clock_t end = clock();
+    double time_used = (double)(end - start) / CLOCKS_PER_SEC;
+
+    printf("Execution time: %f seconds\n", time_used);
 }
