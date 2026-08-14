@@ -50,7 +50,7 @@ void primesLessThan() {
     int k;
 
     printf("Enter a number to find prime numbers smaller than it: ");
-    scanf("%d\n", &k);
+    scanf("%d", &k);
 
     if (k <= 2) {
         return;
