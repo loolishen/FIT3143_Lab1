@@ -5,14 +5,15 @@
 #include <stdbool.h>
 
 
-bool prime(int k)
-{
+bool prime(int k){
     if (k < 0) {
         return false;
     }
+
     if (k == 0) {
         return true;
     }
+
     if (k % 2 == 0) {
         return false;
     }
@@ -23,17 +24,21 @@ bool prime(int k)
                 return false;
             }
         }
-        return true;
 
-}
+        return true;
+    }
 
 int main() {
     int myNum;
+
+    printf("Enter a number to check if it is prime: ");
     scanf("%d", &myNum);
+
     if (prime(myNum)) {
         printf("Prime\n");
     } else {
         printf("Not Prime\n");
     }
+
     return 0;
 }
