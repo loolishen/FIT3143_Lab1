@@ -35,13 +35,9 @@ void writeToFile(int *primes, int count) {
 bool isPrime(int k) {
     if (k <= 1) {
         return false;
-    }
-
-    if (k == 2) {
+    } else if (k == 2) {
         return true;
-    }
-
-    if (k % 2 == 0) {
+    } else if (k % 2 == 0) {
         return false;
     }
         
