@@ -1,7 +1,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <math.h>
 #include <stdbool.h>
 
@@ -24,7 +23,8 @@ void writeToFile(int *primes, int count) {
             fprintf(fptr, ", ");
         }
     }
-    
+
+    fprintf(fptr, "\n");
     fclose(fptr);
 
     printf("File '%s' written successfully.\n", filename);
@@ -61,11 +61,17 @@ void primesLessThan() {
     scanf("%d", &k);
 
     if (k <= 2) {
+        printf("There are no prime numbers less than %d.\n", k);
         return;
     }
 
     int *primes = malloc(sizeof(int) * k);
     int count = 0;
+
+    if (primes == NULL) {
+        printf("Memory allocation failed.\n");
+        return;
+    }
 
     printf("Primes less than %d: ", k);
 
