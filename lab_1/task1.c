@@ -6,6 +6,23 @@
 #include <stdbool.h>
 
 
+void writeToFile() {
+    FILE *fptr;
+
+    fptr = fopen("task1_output.txt", "w");
+
+    if (fptr == NULL) {
+        printf("Error: Could not create or open the file.\n");
+        return; 
+    }
+    
+    fprintf(fptr, "test");
+    fclose(fptr);
+
+    printf("File 'output.txt' written successfully.\n");
+}
+
+
 bool isPrime(int k) {
     if (k <= 1) {
         return false;
@@ -33,7 +50,7 @@ void primesLessThan() {
     int k;
 
     printf("Enter a number to find prime numbers smaller than it: ");
-    scanf("%d", &k);
+    scanf("%d\n", &k);
 
     if (k <= 2) {
         return;
@@ -48,6 +65,7 @@ void primesLessThan() {
     }
 
     printf("\n");
+    writeToFile();
 }
 
 
