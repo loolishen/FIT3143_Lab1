@@ -29,7 +29,12 @@ bool isPrime(int k) {
 }
 
 
-void primesLessThan(int k) {
+void primesLessThan() {
+    int k;
+
+    printf("Enter a number to find prime numbers smaller than it: ");
+    scanf("%d", &k);
+
     if (k <= 2) {
         return;
     }
@@ -41,13 +46,11 @@ void primesLessThan(int k) {
             printf("%d, ", i);
         }
     }
+
+    printf("\n");
 }
 
 
 int main() {
-    int myNum;
-
-    printf("Enter a number find prime numbers smaller than it: ");
-    scanf("%d", &myNum);
-    primesLessThan(myNum);
+    primesLessThan();
 }
