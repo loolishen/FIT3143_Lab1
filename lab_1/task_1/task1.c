@@ -6,20 +6,28 @@
 #include <stdbool.h>
 
 
-void writeToFile() {
+void writeToFile(int *primes, int count) {
     FILE *fptr;
+    char filename[] = "task1_output.txt";
 
-    fptr = fopen("task1_output.txt", "w");
+    fptr = fopen(filename, "w");
 
     if (fptr == NULL) {
         printf("Error: Could not create or open the file.\n");
         return; 
     }
     
-    fprintf(fptr, "test");
+    for (int i = 0; i < count; i++) {
+        fprintf(fptr, "%d", primes[i]);
+
+        if (i < count - 1) {
+            fprintf(fptr, ", ");
+        }
+    }
+    
     fclose(fptr);
 
-    printf("File 'output.txt' written successfully.\n");
+    printf("File '%s' written successfully.\n", filename);
 }
 
 
@@ -56,16 +64,30 @@ void primesLessThan() {
         return;
     }
 
+    int *primes = malloc(sizeof(int) * k);
+    int count = 0;
+
     printf("Primes less than %d: ", k);
 
     for (int i = 2; i < k; i++) {
         if (isPrime(i)) {
-            printf("%d, ", i);
+            primes[count] = i;
+            count += 1;
+        }
+    }
+
+    for (int i = 0; i < count; i++) {
+        printf("%d", primes[i]);
+
+        if (i < count - 1) {
+            printf(", ");
         }
     }
 
     printf("\n");
-    writeToFile();
+
+    writeToFile(primes, count);
+    free(primes);
 }
 
 
