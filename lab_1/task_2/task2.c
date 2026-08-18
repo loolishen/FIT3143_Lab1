@@ -34,6 +34,28 @@ bool isPrime(int k) {
     return true;
 }
 
+void writeToFile(char *is_prime, long n) {
+    FILE *fptr = fopen("task2_output.txt", "w");
+    if (fptr == NULL) {
+        printf("Error: Could not create output file.\n");
+        return;
+    }
+
+    bool first = true;
+    for (long i = 2; i < n; i++) {
+        if (is_prime[i] == 1) {
+            if (!first) {
+                fprintf(fptr, ", ");
+            }
+            fprintf(fptr, "%ld", i);
+            first = false;
+        }
+    }
+    fprintf(fptr, "\n");
+    fclose(fptr);
+    printf("Output successfully written to 'task2_output.txt'.\n");
+}
+
 
 void *ThreadFunc(void *pArg)
 {
@@ -106,14 +128,20 @@ int main()
 
     printf("Parallel prime search up to %ld completed in: %lf seconds\n", n, time_taken);
 
-    long count = 0;
-    for (long i = 2; i < n; i++) {
-        if (is_prime[i] == 1) {
-            count++;
+    if (n <= 100) {
+        printf("Primes less than %ld: ", n);
+        bool first = true;
+        for (long j = 2; j < n; j++) {
+            if (is_prime[j] == 1) {
+                if (!first) printf(", ");
+                printf("%ld", j);
+                first = false;
+            }
         }
+        printf("\n");
+    } else {
+        writeToFile(is_prime, n);
     }
-
-    printf("Total primes found: %ld\n", count);
 
     free(is_prime);
 
