@@ -1,3 +1,11 @@
+////////////////////////////////////////////////////////////////////////////
+// task2.c
+// -------------------------------------------------------------------------
+//
+// Searches for prime numbers that are strictly less than an integer n
+// using POSIX threads (pthreads) for parallelization
+//
+//////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <stdlib.h>
 #include <memory.h>
@@ -7,11 +15,14 @@
 
 #define NUM_THREADS 16
 
+
+// Function prototype
 void printPrimes(int k, char *is_prime);
 bool isPrime(int k);
 void *ThreadFunc(void *pArg);
 
 
+// Structure to hold thread data
 typedef struct {
     int thread_id;
     int k;
@@ -19,11 +30,16 @@ typedef struct {
 } ThreadData;
 
 
+// Function definition
+
+// Function to print prime numbers less than k
 void printPrimes(int k, char *is_prime) {
     if (k <= 100) {
+        // Print primes to console if k is less than or equal to 100
         printf("Primes less than %d: ", k);
         bool first = true;
 
+        // Loop through the is_prime array and print the prime numbers
         for (int j = 2; j < k; j++) {
             if (is_prime[j] == 1) {
                 if (!first) printf(", ");
@@ -35,6 +51,7 @@ void printPrimes(int k, char *is_prime) {
         printf("\n");
 
     } else if (k > 100) {
+        // Write primes to file if k is greater than 100
         FILE *fptr;
         char filename[] = "task2_output.txt";
 
@@ -47,6 +64,7 @@ void printPrimes(int k, char *is_prime) {
 
         bool first = true;
 
+        // Loop through the is_prime array and write the prime numbers to the file
         for (int i = 2; i < k; i++) {
             if (is_prime[i] == 1) {
                 if (!first) {
@@ -66,6 +84,7 @@ void printPrimes(int k, char *is_prime) {
 }
 
 
+// Function to check if a number is prime
 bool isPrime(int k) {
     if (k <= 1) {
         return false;
@@ -74,7 +93,9 @@ bool isPrime(int k) {
     } else if (k % 2 == 0) {
         return false;
     }
-        
+    
+    // Loop through odd numbers starting from 3 up to the square root of k
+    // incrementing by 2 to skip even numbers
     for (int i = 3; i * i <= k; i += 2) {
         if (k % i == 0) {
             return false;
@@ -85,16 +106,19 @@ bool isPrime(int k) {
 }
 
 
+// Thread function to check for prime numbers in a given range
 void *ThreadFunc(void *pArg) {
     ThreadData *data = (ThreadData *)pArg;
 
-    // this is to parallel compute (HHAAHHAHA) the threads with like evenly distributed digits
-    // so like we jump jump per number of threads instead of fixed 1-5, 6-10, 11-15 typa beat
+    // This is to determine the starting point for each thread based on its thread ID
     int starting_point = 3 + (2 * data->thread_id);
 
+    // This is to determine the step amount for each thread based on the number of threads
     int step_amount = 2 * NUM_THREADS;
 
-    for (int i = starting_point; i < data-> k; i += step_amount) {
+    // Loop through the range of numbers assigned to this thread and checks if they are prime,
+    // marking them in the is_prime array
+    for (int i = starting_point; i < data->k; i += step_amount) {
         if (isPrime(i)) {
             data->is_prime[i] = 1;
         }
@@ -104,6 +128,7 @@ void *ThreadFunc(void *pArg) {
 }
 
 
+// Main function to execute the program
 int main() {
     int k;
     struct timespec start, end;
@@ -120,8 +145,8 @@ int main() {
         return 1;
     }
 
-    char *is_prime = (char *)calloc(k, sizeof(char)); // using calloc cus want to set everything at 0 first
-    // basically cus we want everything to be clear 0 for us to check properly otherwise we get dumb values jic
+    // Allocate memory for the is_prime array and initialize it to 0
+    char *is_prime = (char *)calloc(k, sizeof(char));
 
     if (is_prime == NULL){
         printf("Memory allocation failed\n");
