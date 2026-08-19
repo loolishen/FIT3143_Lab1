@@ -7,7 +7,7 @@
 
 #define NUM_THREADS 16
 
-void writeToFile(char *is_prime, int count);
+void printPrimes(int k, char *is_prime);
 bool isPrime(int k);
 void *ThreadFunc(void *pArg);
 
@@ -19,34 +19,50 @@ typedef struct {
 } ThreadData;
 
 
-void printPrimes(char *is_prime, int count) {
-    FILE *fptr;
-    char filename[] = "task2_output.txt";
+void printPrimes(int k, char *is_prime) {
+    if (k <= 100) {
+        printf("Primes less than %d: ", k);
+        bool first = true;
 
-    fptr = fopen(filename, "w");
-
-    if (fptr == NULL) {
-        printf("Error: Could not create output file.\n");
-        return;
-    }
-
-    bool first = true;
-
-    for (int i = 2; i < count; i++) {
-        if (is_prime[i] == 1) {
-            if (!first) {
-                fprintf(fptr, ", ");
+        for (int j = 2; j < k; j++) {
+            if (is_prime[j] == 1) {
+                if (!first) printf(", ");
+                printf("%d", j);
+                first = false;
             }
-            
-            fprintf(fptr, "%d", i);
-            first = false;
         }
+
+        printf("\n");
+
+    } else if (k > 100) {
+        FILE *fptr;
+        char filename[] = "task2_output.txt";
+
+        fptr = fopen(filename, "w");
+
+        if (fptr == NULL) {
+            printf("Error: Could not create output file.\n");
+            return;
+        }
+
+        bool first = true;
+
+        for (int i = 2; i < k; i++) {
+            if (is_prime[i] == 1) {
+                if (!first) {
+                    fprintf(fptr, ", ");
+                }
+                
+                fprintf(fptr, "%d", i);
+                first = false;
+            }
+        }
+
+        fprintf(fptr, "\n");
+        fclose(fptr);
+
+        printf("File '%s' written successfully.\n", filename);
     }
-
-    fprintf(fptr, "\n");
-    fclose(fptr);
-
-    printf("File '%s' written successfully.\n", filename);
 }
 
 
@@ -135,26 +151,6 @@ int main() {
                  (end.tv_nsec - start.tv_nsec) * 1e-9;
 
     printf("Parallel prime search up to %d completed in: %lf seconds\n", k, time_taken);
-
-    if (k <= 100) {
-        printf("Primes less than %d: ", k);
-        bool first = true;
-
-        for (int j = 2; j < k; j++) {
-            if (is_prime[j] == 1) {
-                if (!first) printf(", ");
-                printf("%d", j);
-                first = false;
-            }
-        }
-
-        printf("\n");
-
-    } else {
-        printPrimes(is_prime, k);
-    }
-
+    printPrimes(k, is_prime);
     free(is_prime);
-
-    return 0;
 }
