@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <time.h>
+#include <omp.h>
 
 
 void printPrimes(int k, char *is_prime);
@@ -76,6 +77,7 @@ bool isPrime(int k) {
 
 int main() {
     int k;
+    int i;
     struct timespec start, end;
     double time_taken;
 
@@ -102,7 +104,8 @@ int main() {
     // Get current clock time.
 	clock_gettime(CLOCK_MONOTONIC, &start); 
 
-    for (int i = 2; i < k; i++) {
+    #pragma omp parallel for private(i) shared(is_prime, k) schedule(dynamic, 500) 
+    for (i = 2; i < k; i++) {
         if (isPrime(i)) {
             is_prime[i] = 1;
         }
@@ -113,7 +116,7 @@ int main() {
 	clock_gettime(CLOCK_MONOTONIC, &end); 
     time_taken = (end.tv_sec - start.tv_sec) + 
                  (end.tv_nsec - start.tv_nsec) * 1e-9;
-    printf("Series prime search up to %d completed in: %lf seconds\n", k, time_taken);
+    printf("Parallel prime search up to %d completed in: %lf seconds\n", k, time_taken);
 
     printPrimes(k, is_prime);
     free(is_prime);
