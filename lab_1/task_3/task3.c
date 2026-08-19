@@ -77,7 +77,6 @@ bool isPrime(int k) {
 
 int main() {
     int k;
-    int i;
     struct timespec start, end;
     double time_taken;
 
@@ -104,8 +103,8 @@ int main() {
     // Get current clock time.
 	clock_gettime(CLOCK_MONOTONIC, &start); 
 
-    #pragma omp parallel for private(i) shared(is_prime, k) schedule(dynamic, 500) 
-    for (i = 2; i < k; i++) {
+    #pragma omp parallel for schedule(guided) 
+    for (int i = 3; i < k; i += 2) {
         if (isPrime(i)) {
             is_prime[i] = 1;
         }

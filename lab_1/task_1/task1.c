@@ -102,7 +102,7 @@ int main() {
     // Get current clock time.
 	clock_gettime(CLOCK_MONOTONIC, &start); 
 
-    for (int i = 2; i < k; i++) {
+    for (int i = 3; i < k; i += 2) {
         if (isPrime(i)) {
             is_prime[i] = 1;
         }
