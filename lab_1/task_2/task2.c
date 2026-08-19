@@ -7,8 +7,10 @@
 
 #define NUM_THREADS 16
 
+void writeToFile(char *is_prime, int count);
 bool isPrime(int k);
 void *ThreadFunc(void *pArg);
+
 
 typedef struct {
     int thread_id;
@@ -17,7 +19,7 @@ typedef struct {
 } ThreadData;
 
 
-void writeToFile(char *is_prime, int count) {
+void printPrimes(char *is_prime, int count) {
     FILE *fptr;
     char filename[] = "task2_output.txt";
 
@@ -149,7 +151,7 @@ int main() {
         printf("\n");
 
     } else {
-        writeToFile(is_prime, k);
+        printPrimes(is_prime, k);
     }
 
     free(is_prime);

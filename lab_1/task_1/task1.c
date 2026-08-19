@@ -4,29 +4,49 @@
 #include <time.h>
 
 
-void writeToFile(int *primes, int count) {
-    FILE *fptr;
-    char filename[] = "task1_output.txt";
+void printPrimes(int k, int *primes, int count);
+bool isPrime(int k);
+void primesLessThan();
 
-    fptr = fopen(filename, "w");
 
-    if (fptr == NULL) {
-        printf("Error: Could not create or open the file.\n");
-        return; 
-    }
-    
-    for (int i = 0; i < count; i++) {
-        fprintf(fptr, "%d", primes[i]);
+void printPrimes(int k, int *primes, int count) {
+    if (k <= 100) {
+        printf("Primes less than %d: ", k);
 
-        if (i < count - 1) {
-            fprintf(fptr, ", ");
+        for (int i = 0; i < count; i++) {
+            printf("%d", primes[i]);
+
+            if (i < count - 1) {
+                printf(", ");
+            }
         }
+
+        printf("\n");
+
+    } else if (k > 100) {
+        FILE *fptr;
+        char filename[] = "task1_output.txt";
+
+        fptr = fopen(filename, "w");
+
+        if (fptr == NULL) {
+            printf("Error: Could not create or open the file.\n");
+            return; 
+        }
+        
+        for (int i = 0; i < count; i++) {
+            fprintf(fptr, "%d", primes[i]);
+
+            if (i < count - 1) {
+                fprintf(fptr, ", ");
+            }
+        }
+
+        fprintf(fptr, "\n");
+        fclose(fptr);
+
+        printf("File '%s' written successfully.\n", filename);
     }
-
-    fprintf(fptr, "\n");
-    fclose(fptr);
-
-    printf("File '%s' written successfully.\n", filename);
 }
 
 
@@ -68,8 +88,6 @@ void primesLessThan() {
         return;
     }
 
-    printf("Primes less than %d: ", k);
-
     for (int i = 2; i < k; i++) {
         if (isPrime(i)) {
             primes[count] = i;
@@ -77,17 +95,7 @@ void primesLessThan() {
         }
     }
 
-    for (int i = 0; i < count; i++) {
-        printf("%d", primes[i]);
-
-        if (i < count - 1) {
-            printf(", ");
-        }
-    }
-
-    printf("\n");
-
-    writeToFile(primes, count);
+    printPrimes(k, primes, count);
     free(primes);
 }
 
