@@ -7,7 +7,7 @@
 
 void writeToFile(int *primes, int count) {
     FILE *fptr;
-    char filename[] = "task1_output.txt";
+    char filename[] = "task3_output.txt";
 
     fptr = fopen(filename, "w");
 
