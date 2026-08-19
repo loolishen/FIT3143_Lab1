@@ -4,19 +4,20 @@
 #include <time.h>
 
 
-void printPrimes(int k, int *primes, int count);
+void printPrimes(int k, char *is_prime);
 bool isPrime(int k);
 
 
-void printPrimes(int k, int *primes, int count) {
+void printPrimes(int k, char *is_prime) {
     if (k <= 100) {
         printf("Primes less than %d: ", k);
+        bool first = true;
 
-        for (int i = 0; i < count; i++) {
-            printf("%d", primes[i]);
-
-            if (i < count - 1) {
-                printf(", ");
+        for (int j = 2; j < k; j++) {
+            if (is_prime[j] == 1) {
+                if (!first) printf(", ");
+                printf("%d", j);
+                first = false;
             }
         }
 
@@ -29,15 +30,20 @@ void printPrimes(int k, int *primes, int count) {
         fptr = fopen(filename, "w");
 
         if (fptr == NULL) {
-            printf("Error: Could not create or open the file.\n");
-            return; 
+            printf("Error: Could not create output file.\n");
+            return;
         }
-        
-        for (int i = 0; i < count; i++) {
-            fprintf(fptr, "%d", primes[i]);
 
-            if (i < count - 1) {
-                fprintf(fptr, ", ");
+        bool first = true;
+
+        for (int i = 2; i < k; i++) {
+            if (is_prime[i] == 1) {
+                if (!first) {
+                    fprintf(fptr, ", ");
+                }
+                
+                fprintf(fptr, "%d", i);
+                first = false;
             }
         }
 
@@ -81,12 +87,16 @@ int main() {
         return 1;
     }
 
-    int *primes = malloc(sizeof(int) * k);
-    int count = 0;
+    char *is_prime = (char *)calloc(k, sizeof(char)); // using calloc cus want to set everything at 0 first
+    // basically cus we want everything to be clear 0 for us to check properly otherwise we get dumb values jic
 
-    if (primes == NULL) {
-        printf("Memory allocation failed.\n");
+    if (is_prime == NULL){
+        printf("Memory allocation failed\n");
         return 1;
+    }
+
+    if (k > 2) {
+        is_prime[2] = 1;
     }
 
     // Get current clock time.
@@ -94,8 +104,7 @@ int main() {
 
     for (int i = 2; i < k; i++) {
         if (isPrime(i)) {
-            primes[count] = i;
-            count += 1;
+            is_prime[i] = 1;
         }
     }
 
@@ -106,6 +115,6 @@ int main() {
                  (end.tv_nsec - start.tv_nsec) * 1e-9;
     printf("Series prime search up to %d completed in: %lf seconds\n", k, time_taken);
 
-    printPrimes(k, primes, count);
-    free(primes);
+    printPrimes(k, is_prime);
+    free(is_prime);
 }
