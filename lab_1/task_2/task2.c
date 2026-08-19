@@ -115,6 +115,11 @@ int main() {
     printf("Enter a number to find prime numbers smaller than it: ");
     scanf("%d", &k);
 
+    if (k <= 2) {
+        printf("There are no prime numbers less than %d.\n", k);
+        return 1;
+    }
+
     char *is_prime = (char *)calloc(k, sizeof(char)); // using calloc cus want to set everything at 0 first
     // basically cus we want everything to be clear 0 for us to check properly otherwise we get dumb values jic
 
@@ -149,8 +154,8 @@ int main() {
 	clock_gettime(CLOCK_MONOTONIC, &end); 
     time_taken = (end.tv_sec - start.tv_sec) + 
                  (end.tv_nsec - start.tv_nsec) * 1e-9;
-
     printf("Parallel prime search up to %d completed in: %lf seconds\n", k, time_taken);
+
     printPrimes(k, is_prime);
     free(is_prime);
 }

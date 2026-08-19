@@ -6,7 +6,6 @@
 
 void printPrimes(int k, int *primes, int count);
 bool isPrime(int k);
-void primesLessThan();
 
 
 void printPrimes(int k, int *primes, int count) {
@@ -69,15 +68,17 @@ bool isPrime(int k) {
 }
 
 
-void primesLessThan() {
+int main() {
     int k;
+    struct timespec start, end;
+    double time_taken;
 
     printf("Enter a number to find prime numbers smaller than it: ");
     scanf("%d", &k);
 
     if (k <= 2) {
         printf("There are no prime numbers less than %d.\n", k);
-        return;
+        return 1;
     }
 
     int *primes = malloc(sizeof(int) * k);
@@ -85,8 +86,11 @@ void primesLessThan() {
 
     if (primes == NULL) {
         printf("Memory allocation failed.\n");
-        return;
+        return 1;
     }
+
+    // Get current clock time.
+	clock_gettime(CLOCK_MONOTONIC, &start); 
 
     for (int i = 2; i < k; i++) {
         if (isPrime(i)) {
@@ -95,18 +99,13 @@ void primesLessThan() {
         }
     }
 
+    // Get the clock current time again
+	// Subtract end from start to get the CPU time used.
+	clock_gettime(CLOCK_MONOTONIC, &end); 
+    time_taken = (end.tv_sec - start.tv_sec) + 
+                 (end.tv_nsec - start.tv_nsec) * 1e-9;
+    printf("Series prime search up to %d completed in: %lf seconds\n", k, time_taken);
+
     printPrimes(k, primes, count);
     free(primes);
-}
-
-
-int main() {
-    clock_t start = clock();
-
-    primesLessThan();
-
-    clock_t end = clock();
-    double time_used = (double)(end - start) / CLOCKS_PER_SEC;
-
-    printf("Execution time: %f seconds\n", time_used);
 }
