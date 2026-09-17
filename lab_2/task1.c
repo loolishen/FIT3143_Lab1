@@ -65,12 +65,12 @@ int main(int argc, char *argv[]) {
     if (rank == 0) {
         if (argc != 2) { // if user argc is not equal to 2, print error message and usage instructions
             fprintf(stderr, "Error: Missing input parameter.\nUsage: mpirun -np <procs> %s <integer_n>\n", argv[0]);
-            k = -1; // Set marker to signal failure
+            k = -1; 
         } else { // otherwise then we take the ascii value and conver to int using "atoi" 
             k = atoi(argv[1]);
             if (k <= 2) {
                 fprintf(stderr, "Error: Value n must be an integer strictly greater than 2.\n");
-                k = -1; // Set marker to signal failure
+                k = -1;
             }
         }
     }
